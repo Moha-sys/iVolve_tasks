@@ -1,0 +1,25 @@
+# Part 1: Build Inside Docker
+FROM maven:3.9.9-eclipse-temurin-17
+
+# Set working directory
+WORKDIR /app
+
+# Create a non-root user to control the container
+RUN useradd -m -u 1001 appuser
+
+# Copy pom.xml and source code
+COPY pom.xml .
+COPY src ./src
+
+# Build the application inside Docker and set ownership
+RUN mvn clean package -DskipTests && \
+    chown -R appuser:appuser /app
+
+# Expose port 8080
+EXPOSE 8080
+
+# Switch to non-root user
+USER appuser
+
+# Run the generated JAR file
+CMD ["java", "-jar", "target/calculator.jar"]

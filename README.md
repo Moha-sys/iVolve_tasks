@@ -18,3 +18,5 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | Lab | Focus | Description | Documentation |
 | :--- | :--- | :--- | :--- |
 | **Lab 3** | Dockerfiles & Multi-approach Build | Building Java app Docker images using two approaches (Build inside Docker with Maven vs Build locally with JRE runtime), non-root user security, and image size comparison. | [Lab 3 Documentation](Docker/Lab3/README.md) |
+| **Lab 4** | Image Optimization & Export/Load | Optimizing Docker images with multi-stage builds, non-root user hardening, size comparison, and backup/restore with `docker save` & `docker load`. | [Lab 4 Documentation](Docker/Lab4/README.md) |
+

@@ -9,6 +9,7 @@ This directory contains tasks, labs, and exercises completed for the **Docker** 
 | Lab | Description | Documentation |
 | :--- | :--- | :--- |
 | **Lab 3** | Creating a Docker image for a Java application using two approaches (building inside Docker with Maven vs. building locally with JRE), non-root user setup, and image size comparison. | [Lab 3 Documentation](Lab3/README.md) |
+| **Lab 4** | Docker Image Optimization (Multi-stage build, non-root user security, image size reduction) and Image Export/Load (`docker save` & `docker load`). | [Lab 4 Documentation](Lab4/README.md) |
 
 ---
 

@@ -1,0 +1,7 @@
+# Archives and large container images
+*.tar
+*.tar.gz
+
+# Local dependency caches
+.m2/
+**/.m2/

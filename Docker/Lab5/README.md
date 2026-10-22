@@ -133,7 +133,7 @@ ls -lh report-v1.html
 
 ![Generate Initial HTML Report](screenshots/4-generate-html-report-v1.jpg)
 
-The report [`report-v1.html`](report-v1.html) (**9.3 MB**) catalogs all identified CVEs with severity scores, descriptions, and patch targets.
+The report [`report-v1.html`](TrivyImage/report-v1.html) (**9.3 MB**) catalogs all identified CVEs with severity scores, descriptions, and patch targets.
 
 ---
 
@@ -247,7 +247,7 @@ ls -lh report-v2.html
 
 ![Generate Clean HTML Report for v2](screenshots/7-generate-html-report-v2.jpg)
 
-The generated report [`report-v2.html`](report-v2.html) confirms:
+The generated report [`report-v2.html`](TrivyImage/report-v2.html) confirms:
 > **No Vulnerabilities found across alpine OS and node-pkg libraries.**
 
 ---
@@ -294,4 +294,4 @@ uid=1000(node) gid=1000(node) groups=1000(node)
 | **HIGH & CRITICAL** | **2,343** | **0** | **0 remaining** |
 | **Image Size (Content)** | **363 MB** | **61.9 MB** | **~83% size reduction** |
 | **Container User** | `root` (UID 0) | `node` (UID 1000) | Enforced least privilege |
-| **HTML Report** | [`report-v1.html`](report-v1.html) (9.3 MB) | [`report-v2.html`](report-v2.html) (3.4 KB) | Verified clean state |
+| **HTML Report** | [`report-v1.html`](TrivyImage/report-v1.html) (9.3 MB) | [`report-v2.html`](TrivyImage/report-v2.html) (3.4 KB) | Verified clean state |

@@ -1,0 +1,25 @@
+# Build Stage
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+COPY package.json ./
+RUN sed -i 's/"express": "4.18.2"/"express": "^4.21.2"/' package.json &&     npm install --omit=dev
+
+# Runtime Stage
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Upgrade system packages to apply latest security patches
+RUN apk update && apk upgrade --no-cache &&     rm -rf /usr/local/lib/node_modules/npm /var/cache/apk/*
+
+# Copy installed production dependencies and source
+COPY --from=builder /app/node_modules ./node_modules
+COPY package.json app.js ./
+RUN sed -i 's/"express": "4.18.2"/"express": "^4.21.2"/' package.json
+
+USER node
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]

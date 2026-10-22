@@ -53,7 +53,7 @@ cd "/home/moha/Downloads/iVolve_tasks/Docker/Lab3"
 docker build -t app1 ./part1
 ```
 
-![Build app1](screenshots/part1-build.jpg)
+![Build app1](../screenshots/part1-build.jpg)
 
 ### 3. Check Image Size
 
@@ -61,7 +61,7 @@ docker build -t app1 ./part1
 docker images app1
 ```
 
-![Check app1 Image Size](screenshots/part1-images.jpg)
+![Check app1 Image Size](../screenshots/part1-images.jpg)
 
 The image `app1:latest` takes **823 MB** on disk.
 
@@ -71,7 +71,7 @@ The image `app1:latest` takes **823 MB** on disk.
 docker run -i -p 8080:8080 --name container1 app1
 ```
 
-![Run container1](screenshots/part1-run.jpg)
+![Run container1](../screenshots/part1-run.jpg)
 
 Entered numbers `5` and `3`:
 - `Sum: 8.0`
@@ -86,7 +86,7 @@ docker rm -f container1
 docker rmi app1
 ```
 
-![Cleanup container1](screenshots/part1-cleanup.jpg)
+![Cleanup container1](../screenshots/part1-cleanup.jpg)
 
 ---
 
@@ -134,7 +134,7 @@ cd "/home/moha/Downloads/iVolve_tasks/Docker/Lab3"
 docker build -t app2 ./part2
 ```
 
-![Build app2](screenshots/part2-build.jpg)
+![Build app2](../screenshots/part2-build.jpg)
 
 ### 4. Check Image Size
 
@@ -142,7 +142,7 @@ docker build -t app2 ./part2
 docker images app2
 ```
 
-![Check app2 Image Size](screenshots/part2-images.jpg)
+![Check app2 Image Size](../screenshots/part2-images.jpg)
 
 The image `app2:latest` takes **444 MB** on disk.
 
@@ -152,7 +152,7 @@ The image `app2:latest` takes **444 MB** on disk.
 docker run -i -p 8080:8080 --name container2 app2
 ```
 
-![Run container2](screenshots/part2-run.jpg)
+![Run container2](../screenshots/part2-run.jpg)
 
 Entered numbers `7` and `4`:
 - `Sum: 11.0`
@@ -167,7 +167,7 @@ docker rm -f container2
 docker rmi app2
 ```
 
-![Cleanup container2](screenshots/part2-cleanup.jpg)
+![Cleanup container2](../screenshots/part2-cleanup.jpg)
 
 ---
 

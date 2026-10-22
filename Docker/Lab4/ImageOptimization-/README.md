@@ -53,7 +53,7 @@ docker build -t image1 .
 docker images image1
 ```
 
-![Build image1 and check size](screenshots/1-image1-build.jpg)
+![Build image1 and check size](../screenshots/1-image1-build.jpg)
 
 The initial image `image1:latest` takes **1.12 GB** on disk (content size: **378 MB**).
 
@@ -68,7 +68,7 @@ docker stop container1
 docker rm container1
 ```
 
-![Run container1 and verify](screenshots/2-container1-verify.jpg)
+![Run container1 and verify](../screenshots/2-container1-verify.jpg)
 
 The application responded with:
 ```text
@@ -120,7 +120,7 @@ docker build -f Dockerfile.multistage -t image2 .
 docker images | grep -E 'image1|image2'
 ```
 
-![Build image2 and compare sizes](screenshots/3-image2-multistage-compare.jpg)
+![Build image2 and compare sizes](../screenshots/3-image2-multistage-compare.jpg)
 
 - **`image1`**: 1.12 GB disk usage (378 MB content)
 - **`image2`**: 519 MB disk usage (143 MB content) &rarr; **~62% size reduction!**
@@ -138,7 +138,7 @@ docker stop container2
 docker rm container2
 ```
 
-![Run container2 and verify non-root](screenshots/4-container2-nonroot-verify.jpg)
+![Run container2 and verify non-root](../screenshots/4-container2-nonroot-verify.jpg)
 
 - **Endpoint response**: `"Hello from Dockerized Spring Boot!"`
 - **User verification**: `whoami` returns `appuser`
@@ -154,7 +154,7 @@ docker save -o lab-image.tar image2
 ls -lh lab-image.tar
 ```
 
-![Save image2 to TAR](screenshots/5-save-image2-tar.jpg)
+![Save image2 to TAR](../screenshots/5-save-image2-tar.jpg)
 
 Exported archive `lab-image.tar` is created with a size of **137 MB**.
 
@@ -166,7 +166,7 @@ docker rmi image2
 docker images image2
 ```
 
-![Delete image2](screenshots/6-delete-image2.jpg)
+![Delete image2](../screenshots/6-delete-image2.jpg)
 
 Confirms `image2` is untagged and deleted from the local Docker image list.
 
@@ -178,7 +178,7 @@ docker load -i lab-image.tar
 docker images image2
 ```
 
-![Restore image2 from TAR](screenshots/7-restore-image2-tar.jpg)
+![Restore image2 from TAR](../screenshots/7-restore-image2-tar.jpg)
 
 The image was restored (`Loaded image: image2:latest`) with its original image ID `b9b9d621ae17` and size (**519 MB**).
 

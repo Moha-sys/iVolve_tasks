@@ -78,7 +78,7 @@ docker build -t trivy-lab:v1 .
 docker images trivy-lab:v1
 ```
 
-![Build Initial Image trivy-lab:v1](screenshots/1-build-trivy-lab-v1.jpg)
+![Build Initial Image trivy-lab:v1](../screenshots/1-build-trivy-lab-v1.jpg)
 
 - **Image**: `trivy-lab:v1`
 - **Image ID**: `59c7384e870d`
@@ -94,7 +94,7 @@ Run a full security scan on `trivy-lab:v1` across base operating system packages
 trivy image --skip-db-update trivy-lab:v1
 ```
 
-![Full Trivy Scan on trivy-lab:v1](screenshots/2-scan-all-vulnerabilities.jpg)
+![Full Trivy Scan on trivy-lab:v1](../screenshots/2-scan-all-vulnerabilities.jpg)
 
 ### Key Observations:
 - **Detected OS**: Debian 11.11 (Bullseye).
@@ -111,7 +111,7 @@ Filter the scan to identify severe vulnerabilities that require immediate attent
 trivy image --severity HIGH,CRITICAL --skip-db-update trivy-lab:v1
 ```
 
-![Scan HIGH and CRITICAL Vulnerabilities](screenshots/3-scan-high-critical.jpg)
+![Scan HIGH and CRITICAL Vulnerabilities](../screenshots/3-scan-high-critical.jpg)
 
 ### Vulnerability Breakdown:
 - **Debian 11 OS Packages**: **2,343 HIGH & CRITICAL vulnerabilities** (including `openssl`, `glibc`, `curl`, `systemd`, `util-linux`).
@@ -131,7 +131,7 @@ trivy image --severity HIGH,CRITICAL --skip-db-update --format template --templa
 ls -lh report-v1.html
 ```
 
-![Generate Initial HTML Report](screenshots/4-generate-html-report-v1.jpg)
+![Generate Initial HTML Report](../screenshots/4-generate-html-report-v1.jpg)
 
 The report [`report-v1.html`](report-v1.html) (**9.3 MB**) catalogs all identified CVEs with severity scores, descriptions, and patch targets.
 
@@ -194,7 +194,7 @@ docker build -f Dockerfile.v2 -t ivolve-app:v2 .
 docker images | grep -E 'trivy-lab:v1|ivolve-app:v2'
 ```
 
-![Build Remediated Image ivolve-app:v2](screenshots/5-build-remediated-v2.jpg)
+![Build Remediated Image ivolve-app:v2](../screenshots/5-build-remediated-v2.jpg)
 
 - **`trivy-lab:v1`**: 1.38 GB disk usage (363 MB content)
 - **`ivolve-app:v2`**: 237 MB disk usage (61.9 MB content) &rarr; **~83% size reduction!**
@@ -209,7 +209,7 @@ Scan the updated image `ivolve-app:v2` to verify that all HIGH and CRITICAL vuln
 trivy image --severity HIGH,CRITICAL --skip-db-update ivolve-app:v2
 ```
 
-![Rescan Remediated Image ivolve-app:v2](screenshots/6-rescan-v2-clean.jpg)
+![Rescan Remediated Image ivolve-app:v2](../screenshots/6-rescan-v2-clean.jpg)
 
 ### Scan Results:
 ```text
@@ -245,7 +245,7 @@ trivy image --severity HIGH,CRITICAL --skip-db-update --format template --templa
 ls -lh report-v2.html
 ```
 
-![Generate Clean HTML Report for v2](screenshots/7-generate-html-report-v2.jpg)
+![Generate Clean HTML Report for v2](../screenshots/7-generate-html-report-v2.jpg)
 
 The generated report [`report-v2.html`](report-v2.html) confirms:
 > **No Vulnerabilities found across alpine OS and node-pkg libraries.**
@@ -272,7 +272,7 @@ docker exec test-app id
 docker stop test-app && docker rm test-app
 ```
 
-![Verify Running Container](screenshots/8-verify-container-runtime.jpg)
+![Verify Running Container](../screenshots/8-verify-container-runtime.jpg)
 
 **Output:**
 ```text

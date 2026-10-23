@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ivolve
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - ivolve-net
+
+  app:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_NAME: ivolve
+    volumes:
+      - app_logs:/app/logs
+    networks:
+      - ivolve-net
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  app_logs:
+
+networks:
+  ivolve-net:
+    name: ivolve-net

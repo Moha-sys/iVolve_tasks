@@ -23,3 +23,11 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | **Lab 6** | Environment Variables & Resources | Configuring environment variables via CLI flags, env files, and Dockerfiles; enforcing CPU & memory constraints (`docker stats`). | [Lab 6 Documentation](Docker/Lab6/README.md) |
 | **Lab 7** | Multi-Network Microservices & Storage | Multi-network microservices (`frontend-backend` & `backend-notification`), dual-homed backend, named volumes, and host bind mounts. | [Lab 7 Documentation](Docker/Lab7/README.md) |
 | **Lab 8** | Docker Compose Stack | Multi-container Node.js and MySQL application with Docker Compose, automated database initialization, health probes, and Docker Hub release. | [Lab 8 Documentation](Docker/Lab8/README.md) |
+
+---
+
+## ☸️ Orchestration with Kubernetes
+
+| Lab | Focus | Description | Documentation |
+| :--- | :--- | :--- | :--- |
+| **Lab 9** | Kubernetes Fundamentals | Deploying workloads, services, and configurations on Kubernetes. | [Lab 9 Documentation](Kubernetes/Lab9/README.md) |

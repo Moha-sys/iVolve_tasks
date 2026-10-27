@@ -32,3 +32,5 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | :--- | :--- | :--- | :--- |
 | **Lab 9** | Multi-Node Cluster with Kubeadm | Deploying a multi-node Kubernetes cluster across two Virtual Machines using Kubeadm and Calico CNI. | [Lab 9 Documentation](Kubernetes/Lab9/README.md) |
 | **Lab 10** | Node Isolation (Taints & Labels) | Enforcing node isolation with taints (`workload=ivolveApp:NoSchedule`), labels (`project=ivolve`), and tolerations. | [Lab 10 Documentation](Kubernetes/Lab10/README.md) |
+| **Lab 11** | Namespaces & ResourceQuotas | Namespace management (`ivolve`) and enforcing hard pod resource limits (`ivolveQuota`). | [Lab 11 Documentation](Kubernetes/Lab11/README.md) |
+| **Lab 12** | ConfigMaps & Secrets | Managing application configuration (`ivolveCM`) and Base64 sensitive credentials (`ivolveSecret`). | [Lab 12 Documentation](Kubernetes/Lab12/README.md) |

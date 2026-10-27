@@ -8,7 +8,8 @@ This directory contains tasks, labs, and manifests completed for the **Kubernete
 
 | Lab | Description | Documentation |
 | :--- | :--- | :--- |
-| **Lab 9** | Kubernetes Fundamentals & Workload Deployment | [Lab 9 Documentation](Lab9/README.md) |
+| **Lab 9** | Deploying a multi-node Kubernetes cluster across two Virtual Machines using Kubeadm and Calico CNI. | [Lab 9 Documentation](Lab9/README.md) |
+| **Lab 10** | Node Isolation Using Taints and Labels in Kubernetes (`workload=ivolveApp:NoSchedule` and `project=ivolve`). | [Lab 10 Documentation](Lab10/README.md) |
 
 ---
 

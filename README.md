@@ -30,4 +30,5 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 
 | Lab | Focus | Description | Documentation |
 | :--- | :--- | :--- | :--- |
-| **Lab 9** | Kubernetes Fundamentals | Deploying workloads, services, and configurations on Kubernetes. | [Lab 9 Documentation](Kubernetes/Lab9/README.md) |
+| **Lab 9** | Multi-Node Cluster with Kubeadm | Deploying a multi-node Kubernetes cluster across two Virtual Machines using Kubeadm and Calico CNI. | [Lab 9 Documentation](Kubernetes/Lab9/README.md) |
+| **Lab 10** | Node Isolation (Taints & Labels) | Enforcing node isolation with taints (`workload=ivolveApp:NoSchedule`), labels (`project=ivolve`), and tolerations. | [Lab 10 Documentation](Kubernetes/Lab10/README.md) |

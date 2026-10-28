@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ivolvedbsvc
+  namespace: ivolve
+  labels:
+    app: ivolvedb
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: ivolvedb

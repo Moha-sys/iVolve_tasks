@@ -132,12 +132,27 @@ spec:
    kubectl get gateway,httproute -n ivolve
    ```
 
+![Gateway and HTTPRoute Status](screenshots/1-gateway-httproute-status.jpg)
+
 2. **Test Ingress Routing**:
    ```bash
-   curl -H "Host: ivolve.example.com" http://<GATEWAY_OR_NODE_IP>/health
+   curl -H "Host: ivolve.example.com" http://<NODE_IP>:<PORT>/health
+   curl -H "Host: myapp.ivolve.local" http://<NODE_IP>:<PORT>/ready
    ```
-   *Expected Response:*
-   ```text
-   🚀 iVolve web app is working! Keep calm and code on! 🎉
-   ```
+
+![Verify Ingress Traffic via Gateway](screenshots/2-curl-gateway-api.jpg)
+
+---
+
+## Summary of Commands
+
+| Action | Command |
+| :--- | :--- |
+| **Install Gateway CRDs** | `kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml` |
+| **Install NGINX Controller** | `kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v1.5.0/deploy/default/deploy.yaml` |
+| **Apply Gateway** | `kubectl apply -f gateway.yaml` |
+| **Apply HTTPRoute** | `kubectl apply -f httproute.yaml` |
+| **Verify Gateway & Route** | `kubectl get gateway,httproute -n ivolve` |
+| **Test Route (/health)** | `curl -s -H "Host: ivolve.example.com" http://<NODE_IP>:<PORT>/health` |
+| **Test Route (/ready)** | `curl -s -H "Host: myapp.ivolve.local" http://<NODE_IP>:<PORT>/ready` |
 

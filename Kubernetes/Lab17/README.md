@@ -7,7 +7,7 @@ Comprehensive guide, policy definitions, commands, and security verification for
 ## Lab Objectives
 
 1. **NetworkPolicy Definition**:
-   - Define a NetworkPolicy named `ivolvenp` (and `allow-app-to-mysql`) in namespace `ivolve`.
+   - Define a NetworkPolicy named `ivolvenp` in namespace `ivolve`.
 2. **Pod Selector**:
    - Target MySQL pods (`app: mysql` / `app: ivolvedb`).
 3. **Policy Types**:
@@ -17,7 +17,7 @@ Comprehensive guide, policy definitions, commands, and security verification for
    - Restrict incoming traffic strictly to application pods (`app: ivolveApp` / `app: myapp`).
    - Restrict port strictly to TCP `3306` (MySQL default port).
 5. **Verification**:
-   - Confirm application pods can query MySQL successfully.
+   - Confirm application pods can connect to MySQL port 3306 successfully.
    - Verify that test pods without application labels are blocked from connecting to MySQL port 3306.
 
 ---
@@ -57,7 +57,7 @@ Comprehensive guide, policy definitions, commands, and security verification for
 
 ---
 
-## 1. Step 1: NetworkPolicy Manifest (`network-policy.yaml`)
+## 1. Step 1: Apply & Describe NetworkPolicy (`network-policy.yaml`)
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -109,26 +109,53 @@ spec:
           port: 3306
 ```
 
+Apply and inspect the NetworkPolicy:
+
+```bash
+kubectl apply -f network-policy.yaml
+kubectl describe networkpolicy ivolvenp -n ivolve
+```
+
+![Apply and Describe NetworkPolicy](screenshots/1-apply-describe-networkpolicy.jpg)
+
 ---
 
-## 2. Step 2: Verification Commands
+## 2. Step 2: Verify Allowed Ingress from Application Pods
 
-1. **Apply & Describe NetworkPolicy**:
-   ```bash
-   kubectl apply -f network-policy.yaml
-   kubectl describe networkpolicy ivolvenp -n ivolve
-   ```
+Verify that the `ivolveapp` container connects successfully to `mysql-service:3306`:
 
-2. **Verify Allowed Ingress (From Application Pods)**:
-   ```bash
-   kubectl exec -it deployment/ivolveapp -n ivolve -c ivolveapp -- nc -zv -w 3 mysql-service 3306
-   ```
+```bash
+kubectl exec -it deployment/ivolveapp -n ivolve -c ivolveapp -- node -e '
+const net = require("net");
+const sock = net.createConnection(3306, "mysql-service", () => {
+  console.log("SUCCESS: Connection to mysql-service:3306 allowed by NetworkPolicy!");
+  sock.end();
+});
+'
+```
 
-3. **Verify Blocked Ingress (From Non-Whitelisted Pod)**:
-   ```bash
-   kubectl run test-blocked --image=busybox:1.28 --rm -it --restart=Never -n ivolve \
-     --overrides='{"spec":{"tolerations":[{"key":"workload","operator":"Exists","effect":"NoSchedule"}]}}' \
-     -- nc -zv -w 3 mysql-service 3306
-   ```
-   *Expected Result:* Connection times out, confirming traffic is filtered by the NetworkPolicy.
+![Allowed App Traffic](screenshots/2-allow-app-to-mysql.jpg)
 
+---
+
+## 3. Step 3: Verify Unauthorized Traffic Blocked
+
+Verify that pods without the whitelisted application labels are denied access to MySQL port 3306:
+
+```bash
+kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n default \
+  -- nc -zv -w 3 mysql-service.ivolve.svc.cluster.local 3306
+```
+
+![Blocked Unauthorized Traffic](screenshots/3-blocked-unauthorized-mysql.jpg)
+
+---
+
+## Summary of Commands
+
+| Action | Command |
+| :--- | :--- |
+| **Apply NetworkPolicy** | `kubectl apply -f network-policy.yaml` |
+| **Describe Policy** | `kubectl describe networkpolicy ivolvenp -n ivolve` |
+| **Verify Allowed Access** | `kubectl exec -it deployment/ivolveapp -n ivolve -c ivolveapp -- node -e '...'` |
+| **Verify Blocked Access** | `kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n default -- nc -zv -w 3 mysql-service.ivolve.svc.cluster.local 3306` |

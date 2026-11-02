@@ -1,6 +1,6 @@
 # Lab 16: Pod Resource Management with CPU & Memory Requests and Limits
 
-Comprehensive guide, resource definitions, commands, and monitoring for **Lab 16 (Pod Resource Management with CPU and Memory Requests and Limits)** in Kubernetes.
+Comprehensive guide, resource definitions, commands, and verification for **Lab 16 (Pod Resource Management with CPU and Memory Requests and Limits)** in Kubernetes.
 
 ---
 
@@ -46,7 +46,9 @@ Comprehensive guide, resource definitions, commands, and monitoring for **Lab 16
 
 ---
 
-## 1. Step 1: Updated Deployment Specification (`deployment.yaml`)
+## 1. Step 1: Apply Resource Requests & Limits (`deployment.yaml`)
+
+Update the deployment with resource requests and limits:
 
 ```yaml
 apiVersion: apps/v1
@@ -58,6 +60,11 @@ metadata:
     app: ivolveApp
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: ivolveApp
@@ -144,31 +151,35 @@ spec:
             claimName: pvc-app-logs
 ```
 
+Apply and inspect the applied requests and limits:
+
+```bash
+kubectl apply -f deployment.yaml
+kubectl describe pod -l app=ivolveApp -n ivolve | grep -E "Requests:|Limits:|cpu:|memory:"
+```
+
+![Describe Pod Resources](screenshots/1-describe-pod-resources.jpg)
+
 ---
 
-## 2. Step 2: Verification Commands
+## 2. Step 2: Monitor Real-Time Resource Utilization
 
-1. **Verify Pod Resource Requests & Limits**:
-   ```bash
-   kubectl describe pod -l app=ivolveApp -n ivolve | grep -A 8 "Requests:"
-   ```
-   *Expected Output:*
-   ```text
-       Requests:
-         cpu:      1
-         memory:   1Gi
-       Limits:
-         cpu:      2
-         memory:   2Gi
-   ```
+Verify cluster-wide node utilization and per-pod resource consumption via Metrics Server:
 
-2. **Verify Real-Time Pod Resource Utilization (`top pod`)**:
-   ```bash
-   kubectl top pod -n ivolve
-   ```
+```bash
+kubectl top nodes
+kubectl top pod -n ivolve
+```
 
-3. **Verify Node Capacity & Usage**:
-   ```bash
-   kubectl top nodes
-   ```
+![Top Nodes and Pods Metrics](screenshots/2-top-pod-nodes-metrics.jpg)
 
+---
+
+## Summary of Commands
+
+| Action | Command |
+| :--- | :--- |
+| **Apply Deployment** | `kubectl apply -f deployment.yaml` |
+| **Describe Pod Resources** | `kubectl describe pod -l app=ivolveApp -n ivolve \| grep -E "Requests:\|Limits:\|cpu:\|memory:"` |
+| **Top Nodes** | `kubectl top nodes` |
+| **Top Pods** | `kubectl top pod -n ivolve` |

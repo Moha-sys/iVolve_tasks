@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ivolveapp
+  namespace: ivolve
+  labels:
+    app: ivolveApp
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: ivolveApp
+  template:
+    metadata:
+      labels:
+        app: ivolveApp
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-cred
+      nodeSelector:
+        project: ivolve
+      tolerations:
+        - key: "workload"
+          operator: "Equal"
+          value: "ivolveApp"
+          effect: "NoSchedule"
+        - key: "workload"
+          operator: "Equal"
+          value: "ivolve"
+          effect: "NoSchedule"
+      initContainers:
+        - name: init-mysql-setup
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_USER
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DB_NAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              mysql -h "$DB_HOST" -uroot -p"$MYSQL_ROOT_PASSWORD" <<-EOSQL
+                CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
+                CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+                GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
+                FLUSH PRIVILEGES;
+              EOSQL
+      containers:
+        - name: ivolveapp
+          image: mohadevv/nodejs:1
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: db-config
+            - secretRef:
+                name: db-secret
+          volumeMounts:
+            - name: app-logs
+              mountPath: /app/logs
+      volumes:
+        - name: app-logs
+          persistentVolumeClaim:
+            claimName: pvc-app-logs
+

@@ -144,6 +144,7 @@ Verify that pods without the whitelisted application labels are denied access to
 
 ```bash
 kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n default \
+  --overrides='{"spec":{"tolerations":[{"operator":"Exists"}]}}' \
   -- nc -zv -w 3 mysql-service.ivolve.svc.cluster.local 3306
 ```
 
@@ -158,4 +159,4 @@ kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n de
 | **Apply NetworkPolicy** | `kubectl apply -f network-policy.yaml` |
 | **Describe Policy** | `kubectl describe networkpolicy ivolvenp -n ivolve` |
 | **Verify Allowed Access** | `kubectl exec -it deployment/ivolveapp -n ivolve -c ivolveapp -- node -e '...'` |
-| **Verify Blocked Access** | `kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n default -- nc -zv -w 3 mysql-service.ivolve.svc.cluster.local 3306` |
+| **Verify Blocked Access** | `kubectl run unauthorized-test --image=busybox:1.28 --rm -i --restart=Never -n default --overrides='{"spec":{"tolerations":[{"operator":"Exists"}]}}' -- nc -zv -w 3 mysql-service.ivolve.svc.cluster.local 3306` |

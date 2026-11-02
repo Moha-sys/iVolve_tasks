@@ -17,4 +17,4 @@ This directory contains tasks, labs, and manifests completed for the **Kubernete
 | **Lab 15** | Node.js Application Deployment with Private Registry Secret (`dockerhub-cred`), InitContainer MySQL bootstrap, and ClusterIP Service (`ivolveappsvc`). | [Lab 15 Documentation](Lab15/README.md) |
 | **Lab 16** | Pod Resource Management with CPU and Memory Requests (`1 CPU`, `1Gi`) and Limits (`2 CPU`, `2Gi`), and Metrics Server monitoring. | [Lab 16 Documentation](Lab16/README.md) |
 | **Lab 17** | Control Pod-to-Pod Traffic via NetworkPolicy (`ivolvenp` / `allow-app-to-mysql`) restricting MySQL ingress on TCP port 3306. | [Lab 17 Documentation](Lab17/README.md) |
-| **Bonus** | Modern Kubernetes Gateway API implementation (`Gateway` + `HTTPRoute`) via NGINX Gateway Fabric. | [Gateway API Documentation](GatewayAPI/README.md) |
+| **GatewayAPI** | Modern Kubernetes Gateway API implementation (`Gateway` + `HTTPRoute`) via NGINX Gateway Fabric. | [Gateway API Documentation](GatewayAPI/README.md) |

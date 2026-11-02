@@ -1,6 +1,6 @@
-# Bonus Task: Exposing Application via Kubernetes Gateway API
+# GatewayAPI: Exposing Application via Kubernetes Gateway API
 
-Comprehensive guide, Gateway API architecture, controller installation, and HTTP routing manifests for the **Kubernetes Gateway API (Gateway + HTTPRoute)** bonus task.
+Comprehensive guide, Gateway API architecture, controller installation, and HTTP routing manifests for the **Kubernetes Gateway API (Gateway + HTTPRoute)** task.
 
 ---
 

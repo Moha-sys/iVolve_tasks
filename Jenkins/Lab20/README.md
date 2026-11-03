@@ -59,7 +59,7 @@ Comprehensive guide, configuration, automation scripts, and verification for **L
 
 ## 1. Step 1: User Management (`user1` & `user2`)
 
-Create the user accounts in Jenkins under **Manage Jenkins** > **Users** (or via automated initialization):
+Create the user accounts in Jenkins under **Manage Jenkins** > **Users**:
 
 - **User 1**:
   - Username: `user1`
@@ -77,48 +77,52 @@ Create the user accounts in Jenkins under **Manage Jenkins** > **Users** (or via
 ## 2. Step 2: Configure Role-Based Authorization Strategy & Define Roles
 
 1. In **Manage Jenkins** > **Security**, set **Authorization** to **Role-Based Strategy**.
-2. Navigate to **Manage Jenkins** > **Manage and Assign Roles** > **Manage Roles**.
-3. Under **Global roles**, configure:
-   - **`admin`**: Check `Administer` (grants all permissions).
+2. Navigate to **Manage Jenkins** > **Role Management** > **Roles**.
+3. Under **Global roles**, configure the following:
+   - **`admin`**: Check `Administer` (grants full administrative access across Jenkins).
    - **`read-only`**: Check `Overall/Read`, `Job/Read`, and `View/Read`.
 
-![Manage Roles Configuration](screenshots/2-manage-roles.jpg)
+### Admin Role Definition
+![Admin Role Definition](screenshots/2-manage-roles-admin.jpg)
+
+### Read-Only Role Definition
+![Read-Only Role Definition](screenshots/3-manage-roles-readonly.jpg)
 
 ---
 
 ## 3. Step 3: Assign Roles to Users
 
-1. Navigate to **Manage Jenkins** > **Manage and Assign Roles** > **Assign Roles**.
+1. Navigate to **Manage Jenkins** > **Role Management** > **Assign Roles**.
 2. Under **Global roles**:
-   - Add `user1` and assign the **`admin`** role.
-   - Add `user2` and assign the **`read-only`** role.
+   - Assign `admin` role to `User One` (`user1`) and `Mohamed Ashraf Farouk Kharoub` (`moha_96`).
+   - Assign `read-only` role to `User Two` (`user2`).
 
-![Assign Roles Configuration](screenshots/3-assign-roles.jpg)
+![Assign Roles Configuration](screenshots/4-assign-roles.jpg)
 
 ---
 
 ## 4. Step 4: Verification
 
 ### 1. `user1` (Admin View)
-Log in as `user1` and confirm administrative control over Jenkins:
-- Access to **Manage Jenkins**.
-- Full pipeline and job configuration privileges.
+Log in as `user1` and verify administrative control:
+- Full access to **+ New Item**, **Manage Jenkins**, and system configuration.
+- Direct execution access with build trigger buttons available for all jobs.
 
-![User1 Admin Access](screenshots/4-user1-admin-view.jpg)
+![User1 Admin Access](screenshots/5-user1-admin-view.jpg)
 
 ### 2. `user2` (Read-Only View)
-Log in as `user2` and confirm restricted read-only permissions:
-- **Manage Jenkins** menu item is completely hidden.
-- Can view existing projects (`lab22`, `muilti_branch`) and build logs.
-- Build trigger (`Build Now`) and configuration buttons are hidden or disabled.
+Log in as `user2` and verify restricted access:
+- **Manage Jenkins** and **+ New Item** are completely hidden.
+- Can view pipeline status, jobs list, and execution history.
+- Build trigger buttons and modification controls are hidden and unauthorized.
 
-![User2 Read-Only Access](screenshots/5-user2-readonly-view.jpg)
+![User2 Read-Only Access](screenshots/6-user2-readonly-view.jpg)
 
 ---
 
 ## Automated RBAC Setup Script (`setup_rbac.groovy`)
 
-The configuration can also be applied automatically via the Groovy script located at `setup_rbac.groovy`:
+The configuration can also be applied automatically via the Groovy script located at [setup_rbac.groovy](setup_rbac.groovy):
 
 ```bash
 docker cp setup_rbac.groovy jenkins:/var/jenkins_home/init.groovy.d/setup_rbac.groovy

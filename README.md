@@ -42,3 +42,11 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | **Lab 18** | Node-Wide Pod Management & Monitoring | Deploying Prometheus node-exporter as a DaemonSet across all nodes, Alertmanager, Prometheus server, and Grafana in dedicated `monitoring` namespace. | [Lab 18 Documentation](Kubernetes/Lab18/README.md) |
 | **Lab 19** | RBAC & Service Accounts Security | Configuring Kubernetes ServiceAccount (`jenkinssa`), long-lived token, Role (`ivolveDeployRole`), and RoleBinding (`ivolveDeployRoleBinding`) with least-privilege deployment permissions. | [Lab 19 Documentation](Kubernetes/Lab19/README.md) |
 | **GatewayAPI** | Kubernetes Gateway API | Deploying modern Gateway API (`Gateway` + `HTTPRoute`) via NGINX Gateway Fabric controller to expose the application externally. | [Gateway API Documentation](Kubernetes/GatewayAPI/README.md) |
+
+---
+
+## 🔄 Continuous Integration & Continuous Delivery (CI/CD) with Jenkins
+
+| Lab | Focus | Description | Documentation |
+| :--- | :--- | :--- | :--- |
+| **Lab 20** | Role-Based Authorization Strategy | Configuring Jenkins RBAC with Role-based Authorization Strategy: creating `user1` and `user2`, configuring `admin` and `read-only` global roles, and verifying access permissions. | [Lab 20 Documentation](Jenkins/Lab20/README.md) |

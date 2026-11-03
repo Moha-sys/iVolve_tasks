@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkinssa
+  namespace: ivolve
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jenkinssa-token
+  namespace: ivolve
+  annotations:
+    kubernetes.io/service-account.name: jenkinssa
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ivolveDeployRole
+  namespace: ivolve
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["create", "update", "patch", "get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ivolveDeployRoleBinding
+  namespace: ivolve
+subjects:
+  - kind: ServiceAccount
+    name: jenkinssa
+    namespace: ivolve
+roleRef:
+  kind: Role
+  name: ivolveDeployRole
+  apiGroup: rbac.authorization.k8s.io

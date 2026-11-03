@@ -18,4 +18,5 @@ This directory contains tasks, labs, and manifests completed for the **Kubernete
 | **Lab 16** | Pod Resource Management with CPU and Memory Requests (`1 CPU`, `1Gi`) and Limits (`2 CPU`, `2Gi`), and Metrics Server monitoring. | [Lab 16 Documentation](Lab16/README.md) |
 | **Lab 17** | Control Pod-to-Pod Traffic via NetworkPolicy (`ivolvenp` / `allow-app-to-mysql`) restricting MySQL ingress on TCP port 3306. | [Lab 17 Documentation](Lab17/README.md) |
 | **Lab 18** | Node-Wide Pod Management with DaemonSet (`node-exporter`), Prometheus server, Alertmanager, and Grafana in `monitoring` namespace. | [Lab 18 Documentation](Lab18/README.md) |
+| **Lab 19** | Securing Kubernetes with RBAC and Service Accounts (`jenkinssa`, `ivolveDeployRole`, `ivolveDeployRoleBinding`). | [Lab 19 Documentation](Lab19/README.md) |
 | **GatewayAPI** | Modern Kubernetes Gateway API implementation (`Gateway` + `HTTPRoute`) via NGINX Gateway Fabric. | [Gateway API Documentation](GatewayAPI/README.md) |

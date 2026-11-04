@@ -1,0 +1,171 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME    = 'mohadevv/demoapp'
+        IMAGE_TAG     = "${BUILD_NUMBER}"
+        K8S_NAMESPACE = 'ivolve'
+        DOCKER_CREDS  = 'docker'
+    }
+
+    stages {
+        stage('Checkout Source Code') {
+            steps {
+                echo "Cloning source code and Dockerfile from DemoApp repository..."
+                sh '''
+                rm -rf * .git
+                git clone --depth 1 https://github.com/Ibrahim-Adel15/DemoApp.git .
+                '''
+            }
+        }
+
+        stage('Build app') {
+            steps {
+                echo "Building application JAR using Maven..."
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}..."
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+            }
+        }
+
+        stage('Scan Docker Image') {
+            steps {
+                echo "Scanning Docker image with Trivy for vulnerabilities..."
+                sh """
+                trivy image --severity HIGH,CRITICAL --scanners vuln ${IMAGE_NAME}:${IMAGE_TAG} || true
+                """
+            }
+        }
+
+        stage('Push image to DockerHub') {
+            steps {
+                echo "Authenticating and pushing image to Docker Hub..."
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_CREDS}",
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh """
+                    echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
+                    docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${IMAGE_NAME}:latest
+                    """
+                }
+            }
+        }
+
+        stage('Delete image locally') {
+            steps {
+                echo "Cleaning up local runner storage..."
+                sh """
+                docker rmi ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest || true
+                """
+            }
+        }
+
+        stage('Update image in deployment file') {
+            steps {
+                echo "Updating container image tag in Kubernetes deployment manifest..."
+                sh """
+                mkdir -p k8s
+                cat << 'EOF2' > k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demoapp-deployment
+  namespace: ${K8S_NAMESPACE}
+  labels:
+    app: demoapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: demoapp
+  template:
+    metadata:
+      labels:
+        app: demoapp
+    spec:
+      tolerations:
+      - key: "workload"
+        operator: "Equal"
+        value: "ivolveApp"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - name: demoapp
+        image: REPLACE_IMAGE
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+EOF2
+                cat << 'EOF2' > k8s/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demoapp-service
+  namespace: ${K8S_NAMESPACE}
+  labels:
+    app: demoapp
+spec:
+  type: NodePort
+  selector:
+    app: demoapp
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30088
+    protocol: TCP
+EOF2
+                sed -i "s|REPLACE_IMAGE|${IMAGE_NAME}:${IMAGE_TAG}|g" k8s/deployment.yaml
+                cat k8s/deployment.yaml
+                """
+            }
+        }
+
+        stage('Deploy to Kubernetes cluster') {
+            steps {
+                echo "Deploying application to Kubernetes cluster in namespace ${K8S_NAMESPACE}..."
+                sh """
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
+                kubectl rollout status deployment/demoapp-deployment -n ${K8S_NAMESPACE} --timeout=300s
+                kubectl get deployment,pods,svc -l app=demoapp -n ${K8S_NAMESPACE} -o wide
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "=========================================================="
+            echo " Pipeline Execution Completed (always block)               "
+            echo "=========================================================="
+        }
+        success {
+            echo "=========================================================="
+            echo " SUCCESS: DemoApp deployed to Kubernetes successfully!    "
+            echo " App URL: http://192.168.8.130:30088/                     "
+            echo "=========================================================="
+        }
+        failure {
+            echo "=========================================================="
+            echo " FAILURE: Pipeline encountered an error. Check logs above! "
+            echo "=========================================================="
+        }
+    }
+}

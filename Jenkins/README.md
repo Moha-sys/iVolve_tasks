@@ -9,3 +9,4 @@ This directory contains tasks, configurations, automation scripts, and verificat
 | Lab | Description | Documentation |
 | :--- | :--- | :--- |
 | **Lab 20** | Role-based Authorization in Jenkins: user management (`user1`, `user2`), global roles (`admin`, `read-only`), assignment, and permission verification. | [Lab 20 Documentation](Lab20/README.md) |
+| **Lab 21** | Jenkins Pipeline for Application Deployment: 7-stage CI/CD pipeline building Spring Boot app, Docker build, Trivy scan, Docker Hub push, local cleanup, manifest update, and Kubernetes cluster rollout. | [Lab 21 Documentation](Lab21/README.md) |

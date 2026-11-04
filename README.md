@@ -50,3 +50,4 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | Lab | Focus | Description | Documentation |
 | :--- | :--- | :--- | :--- |
 | **Lab 20** | Role-Based Authorization Strategy | Configuring Jenkins RBAC with Role-based Authorization Strategy: creating `user1` and `user2`, configuring `admin` and `read-only` global roles, and verifying access permissions. | [Lab 20 Documentation](Jenkins/Lab20/README.md) |
+| **Lab 21** | Jenkins Pipeline for Application Deployment | Automating a 7-stage CI/CD pipeline in Jenkins: Spring Boot build with Maven, Docker containerization, Trivy vulnerability scanning, Docker Hub publishing, manifest dynamic tagging, and Kubernetes deployment rollout. | [Lab 21 Documentation](Jenkins/Lab21/README.md) |

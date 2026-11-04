@@ -413,22 +413,19 @@ EOF2
 
 ## Visual Verification & Proof of Work
 
-### 1. Jenkins Agent Status (`slave-node` Online)
+### 1. Jenkins Inbound Agent Status (`slave-node` Online)
 ![Jenkins Agent Status](screenshots/1-jenkins-agent-node-status.jpg)
-*Figure 1: `Manage Jenkins > Nodes` verifying `slave-node` agent connected via JNLP and operational.*
+*Figure 1: `Manage Jenkins > Nodes` verifying `slave-node` inbound agent is online, in sync, and operational.*
 
 ### 2. Jenkins Global Shared Library Configuration
 ![Shared Library Configuration](screenshots/2-jenkins-shared-library-config.jpg)
-*Figure 2: `Manage Jenkins > System > Global Pipeline Libraries` configuring `ivolve-shared-library` from GitHub.*
+*Figure 2: `Manage Jenkins > System > Global Pipeline Libraries` configuring `ivolve-shared-library` sourced from GitHub on branch `main`.*
 
-### 3. Lab 22 Pipeline Stage View
+### 3. Lab 22 Pipeline Stage View (Build #5 Success)
 ![Lab 22 Pipeline Stage View](screenshots/3-lab22-pipeline-stage-view.jpg)
-*Figure 3: Pipeline stage view showing green successful stages executed via shared library steps on `slave-node`.*
+*Figure 3: Pipeline Stage View showing end-to-end green stages executed on `slave-node` using the custom shared library steps.*
 
-### 4. Console Log & Shared Library Execution Success
-![Console Log Success](screenshots/4-lab22-console-success.jpg)
-*Figure 4: Console log demonstrating successful step executions and agent assignment.*
+### 4. Application Verification via Browser
+![Application Browser Verification](screenshots/4-demoapp-browser-verification.jpg)
+*Figure 4: Accessing DemoApp at `http://192.168.8.130:30088/` confirming live Spring Boot response.*
 
-### 5. DemoApp Live Running on Kubernetes
-![DemoApp K8s Verification](screenshots/5-demoapp-running-on-k8s.jpg)
-*Figure 5: Kubernetes `kubectl get pods -n ivolve` and browser access on port 30088.*

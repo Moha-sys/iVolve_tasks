@@ -301,10 +301,10 @@ The pipeline executes all 7 automated processes seamlessly from clone through co
 
 ![Jenkins Pipeline Stage View](screenshots/1-jenkins-pipeline-stage-view.jpg)
 
-### 2. Trivy Vulnerability Scan & Docker Hub Push
-Trivy performs security inspection before pushing the validated container images (`tag` and `latest`) to Docker Hub with stored credentials.
+### 2. Pipeline Execution & Post-Action Results
+The build console log verifies the successful completion of all pipeline stages, triggering the post actions and final deployment confirmation.
 
-![Trivy Scan and Docker Hub Push](screenshots/2-trivy-scan-and-docker-push.jpg)
+![Pipeline Post Actions & Success](screenshots/2-console-post-actions-and-success.jpg)
 
 ### 3. Kubernetes Deployment & Pod Distribution
 Pods are deployed with high availability across both cluster nodes (`master` and `worker1`) in namespace `ivolve`.

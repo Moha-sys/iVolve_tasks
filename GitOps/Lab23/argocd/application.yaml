@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ivovle
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Moha-sys/iVolve_tasks.git
+    targetRevision: main
+    path: GitOps/Lab23/k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ivolve
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

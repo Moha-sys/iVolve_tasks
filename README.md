@@ -52,3 +52,11 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | **Lab 20** | Role-Based Authorization Strategy | Configuring Jenkins RBAC with Role-based Authorization Strategy: creating `user1` and `user2`, configuring `admin` and `read-only` global roles, and verifying access permissions. | [Lab 20 Documentation](Jenkins/Lab20/README.md) |
 | **Lab 21** | Jenkins Pipeline for Application Deployment | Automating a 7-stage CI/CD pipeline in Jenkins: Spring Boot build with Maven, Docker containerization, Trivy vulnerability scanning, Docker Hub publishing, manifest dynamic tagging, and Kubernetes deployment rollout. | [Lab 21 Documentation](Jenkins/Lab21/README.md) |
 | **Lab 22** | Jenkins Distributed Agents & Shared Libraries | Implementing custom Jenkins Shared Library (`BuildApp`, `BuildImage`, `DeployOnK8s`), configuring distributed inbound agent (`slave-node`), and deploying application to Kubernetes cluster. | [Lab 22 Documentation](Jenkins/Lab22/README.md) |
+
+---
+
+## 🚀 GitOps Continuous Delivery with Argo CD
+
+| Lab | Focus | Description | Documentation |
+| :--- | :--- | :--- | :--- |
+| **Lab 23** | GitOps Workflow with Jenkins & Argo CD | End-to-end GitOps workflow: Argo CD installation on Kubernetes, Git repository connection, automated sync and self-healing application (`ivovle`), Jenkins shared library GitOps role (`DeployOnK8s`), image building/publishing, and automated cluster rollout. | [Lab 23 Documentation](GitOps/Lab23/README.md) |

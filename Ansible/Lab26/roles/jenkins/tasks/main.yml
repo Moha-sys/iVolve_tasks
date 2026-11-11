@@ -1,21 +1,20 @@
 ---
-- name: Install Java 17 LTS prerequisite
+- name: Install Java 21 LTS prerequisite
   ansible.builtin.package:
     name: "{{ jenkins_java_package }}"
     state: present
 
 - name: Import Jenkins official repository GPG key
-  ansible.builtin.rpm_key:
-    key: "{{ jenkins_repo_key }}"
-    state: present
-  when: ansible_os_family == "RedHat"
+  ansible.builtin.command: "rpm --import {{ jenkins_repo_key }}"
+  when: ansible_facts['os_family'] == "RedHat"
+  changed_when: false
 
 - name: Add Jenkins RPM repository
   ansible.builtin.get_url:
     url: "{{ jenkins_repo_url }}"
     dest: /etc/yum.repos.d/jenkins.repo
     mode: '0644'
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Install Jenkins package
   ansible.builtin.package:

@@ -90,7 +90,7 @@ Ansible/Lab26/
 * **Tags**: `kubectl`, `kubernetes_tools`.
 
 ### 3. `jenkins` Role
-* **Tasks**: Installs `java-17-openjdk-devel`, imports the official Jenkins GPG key, defines the RPM repository, installs package `jenkins`, and ensures the systemd service is active.
+* **Tasks**: Installs `java-21-openjdk-devel` LTS, imports the official Jenkins GPG key, defines the RPM repository, installs package `jenkins`, and ensures the systemd service is active.
 * **Handler**: Notifies `restart jenkins` on configuration updates.
 * **Tags**: `jenkins`, `ci_server`.
 
@@ -104,6 +104,8 @@ Ansible/Lab26/
 ansible-playbook site.yml --syntax-check
 ```
 
+![Playbook Syntax Check](screenshots/01-site-playbook-syntax-check.jpg)
+
 ### Step 2: Run All Roles
 
 Execute all three roles sequentially across managed hosts:
@@ -112,6 +114,8 @@ Execute all three roles sequentially across managed hosts:
 ansible-playbook site.yml --ask-become-pass -l managed_nodes
 ```
 
+![Master Playbook Full Execution](screenshots/02-site-playbook-full-execution.jpg)
+
 ### Step 3: Run Specific Roles Using Tags
 
 Execute only the Docker and Kubectl roles:
@@ -119,10 +123,14 @@ Execute only the Docker and Kubectl roles:
 ansible-playbook site.yml --ask-become-pass --tags "docker,kubectl"
 ```
 
+![Tagged Execution Docker and Kubectl](screenshots/03-tagged-execution-docker-kubectl.jpg)
+
 Execute only the Jenkins role:
 ```bash
 ansible-playbook site.yml --ask-become-pass --tags "jenkins"
 ```
+
+![Tagged Execution Jenkins](screenshots/04-tagged-execution-jenkins.jpg)
 
 ### Step 4: Using the Convenience Runner Script
 

@@ -108,6 +108,13 @@ Validate passwordless SSH access:
 ssh -i ~/.ssh/id_rsa -o BatchMode=yes moha@192.168.1.61 "hostname && uptime"
 ```
 
+Or execute the automated key generation & transfer script [`generate-keys.sh`](generate-keys.sh):
+```bash
+./generate-keys.sh moha 192.168.1.61
+```
+
+![SSH Key Generation & Transfer](screenshots/01-ssh-key-generation-and-copy.jpg)
+
 ### Step 4: Create Inventory of Managed Node
 
 Create [`inventory.ini`](inventory.ini) defining host groups and connection variables:
@@ -164,6 +171,13 @@ Execute targeted Ansible ad-hoc commands using built-in modules:
    ansible managed_nodes -m command -a "docker --version"
    ansible managed_nodes -m command -a "docker info"
    ```
+
+Or execute the complete ad-hoc sequence via [`ad-hoc-commands.sh`](ad-hoc-commands.sh):
+```bash
+./ad-hoc-commands.sh managed_nodes
+```
+
+![Ad-Hoc Docker Installation & Verification](screenshots/02-adhoc-docker-install-and-verify.jpg)
 
 ---
 

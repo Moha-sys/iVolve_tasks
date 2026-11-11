@@ -143,22 +143,20 @@ Run the dynamic inventory graph command to inspect discovered groups:
 
 ```bash
 ansible-inventory -i aws_ec2.yaml --graph
+# Or using local simulation:
+ansible-inventory -i inventory_mock.yaml --graph
 ```
 
-Output dynamically groups discovered hosts:
-```text
-@all:
-  |--@tag_server_ivolve:
-  |  |--18.xxx.xxx.xxx
-  |--@ungrouped:
-```
+![Ansible Dynamic Inventory Graph](screenshots/01-ansible-inventory-graph.jpg)
 
 List complete host variables and AWS EC2 metadata in JSON format:
 ```bash
 ansible-inventory -i aws_ec2.yaml --list
+# Or using local simulation:
+ansible-inventory -i inventory_mock.yaml --list
 ```
 
-*(For testing without active AWS credentials, verify group resolution with `ansible-inventory -i inventory_mock.yaml --graph`).*
+![Ansible Dynamic Inventory List](screenshots/02-ansible-inventory-list.jpg)
 
 ---
 
@@ -168,6 +166,8 @@ Execute [`playbook.yml`](playbook.yml) targeting the dynamically generated group
 
 ```bash
 ansible-playbook -i aws_ec2.yaml playbook.yml
+# Or using local simulation:
+ansible-playbook -i inventory_mock.yaml playbook.yml --ask-become-pass
 ```
 
 The playbook executes:
@@ -175,6 +175,9 @@ The playbook executes:
 2. Installs web server package (`nginx`).
 3. Deploys custom HTML page confirming dynamic automation.
 4. Starts and enables the web service.
+5. Validates local HTTP response (`200 OK`).
+
+![Dynamic EC2 Playbook Execution](screenshots/03-dynamic-ec2-playbook-execution.jpg)
 
 ---
 

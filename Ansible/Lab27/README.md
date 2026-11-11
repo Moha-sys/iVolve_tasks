@@ -98,6 +98,8 @@ Ansible/Lab27/
    ansible-vault edit roles/mysql/vars/vault.yml
    ```
 
+![Ansible Vault View Encrypted Secrets](screenshots/01-ansible-vault-view.jpg)
+
 ### Step 2: Implement the `mysql` Role
 
 The role defines:
@@ -124,12 +126,16 @@ ansible-playbook playbook.yml --ask-become-pass -l managed_nodes
 ```
 *(Ansible automatically decrypts `vars/vault.yml` using `.vault_pass` configured in [`ansible.cfg`](ansible.cfg) or via `--ask-vault-pass`).*
 
+![MySQL Role Playbook Execution](screenshots/02-mysql-role-playbook-execution.jpg)
+
 ### Step 4: Validate Database Access on Managed Node
 
 Run the automated validation script:
 ```bash
 ./validate-db.sh managed_nodes
 ```
+
+![Validate DB and Permissions](screenshots/03-validate-db-permissions.jpg)
 
 Or execute direct ad-hoc validation on the managed host:
 ```bash

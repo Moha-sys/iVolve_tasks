@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: iVolve Team
+  description: Ansible role to download and install Kubectl CLI
+  company: iVolve
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+        - "10"
+dependencies: []

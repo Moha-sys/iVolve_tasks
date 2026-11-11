@@ -60,3 +60,16 @@ A collection of hands-on tasks, labs, and projects completed during the NTI On-t
 | Lab | Focus | Description | Documentation |
 | :--- | :--- | :--- | :--- |
 | **Lab 23** | GitOps Workflow with Jenkins & Argo CD | End-to-end GitOps workflow: Argo CD installation on Kubernetes, Git repository connection, automated sync and self-healing application (`ivovle`), Jenkins shared library GitOps role (`DeployOnK8s`), image building/publishing, and automated cluster rollout. | [Lab 23 Documentation](GitOps/Lab23/README.md) |
+
+---
+
+## 📜 Configuration Management & Automation with Ansible (RH294)
+
+| Lab | Focus | Description | Documentation |
+| :--- | :--- | :--- | :--- |
+| **Lab 24** | Initial Configuration & Ad-Hoc Execution | Installing Ansible on control node, generating RSA 4096-bit SSH keys, distributing public key via `ssh-copy-id`, static inventory management, and executing ad-hoc commands to install and verify Docker. | [Lab 24 Documentation](Ansible/Lab24/README.md) |
+| **Lab 25** | Automated Workstation via Playbooks | Writing an end-to-end Ansible playbook to automate the installation and verification of Docker CE, architecture-aware Kubectl binary, and Jenkins CI server with Java 17 LTS. | [Lab 25 Documentation](Ansible/Lab25/README.md) |
+| **Lab 26** | Structured Roles Management | Modular refactoring into standalone, reusable, tagged Ansible roles (`docker`, `kubectl`, `jenkins`) with dedicated tasks, handlers, defaults, and master playbook orchestration. | [Lab 26 Documentation](Ansible/Lab26/README.md) |
+| **Lab 27** | Securing Sensitive Data with Vault | Provisioning MySQL/MariaDB role, creating database `ivovle` and user `ivolveuser`, and encrypting sensitive credentials using AES-256 Ansible Vault. | [Lab 27 Documentation](Ansible/Lab27/README.md) |
+| **Lab 28** | Dynamic Inventory & Cloud Discovery | Setting up AWS EC2 dynamic host discovery via `amazon.aws.aws_ec2` plugin, filtering instances by tag `server:ivolve`, inventory graphing, and automated web server configuration. | [Lab 28 Documentation](Ansible/Lab28/README.md) |
+

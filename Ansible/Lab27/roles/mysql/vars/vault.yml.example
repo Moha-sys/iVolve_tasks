@@ -1,0 +1,8 @@
+---
+# ==============================================================================
+# Lab 27: Ansible Vault Variables Reference (Unencrypted Example)
+# To encrypt: ansible-vault encrypt roles/mysql/vars/vault.yml --vault-password-file .vault_pass
+# To view:    ansible-vault view roles/mysql/vars/vault.yml --vault-password-file .vault_pass
+# ==============================================================================
+vault_mysql_root_password: "RootSecretPassword2026!"
+vault_ivolveuser_password: "IvolveSecurePassword2026!"

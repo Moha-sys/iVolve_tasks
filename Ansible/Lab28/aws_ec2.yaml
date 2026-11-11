@@ -1,0 +1,34 @@
+---
+# ==============================================================================
+# Lab 28: AWS EC2 Dynamic Inventory Configuration
+# Discovers running EC2 instances with tag server:ivolve
+# ==============================================================================
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+
+# Filter only running instances carrying tag server:ivolve
+filters:
+  tag:server: ivolve
+  instance-state-name: running
+
+# Host naming priority
+hostnames:
+  - ip-address
+  - dns-name
+  - tag:Name
+
+# Dynamically construct inventory groups based on instance attributes and tags
+keyed_groups:
+  # Groups hosts by tags (e.g. tag_server_ivolve)
+  - prefix: tag
+    key: ec2_tags
+  # Groups hosts by architecture / instance type
+  - prefix: arch
+    key: architecture
+  - prefix: type
+    key: instance_type
+
+# Set Ansible connection variables from AWS instance attributes
+compose:
+  ansible_host: public_ip_address

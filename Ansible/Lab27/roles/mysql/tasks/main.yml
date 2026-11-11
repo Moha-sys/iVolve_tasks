@@ -1,0 +1,67 @@
+---
+- name: Load encrypted credentials from Ansible Vault
+  ansible.builtin.include_vars:
+    file: vars/vault.yml
+
+- name: Install MySQL/MariaDB server and Python database connector
+  ansible.builtin.package:
+    name: "{{ mysql_packages }}"
+    state: present
+
+- name: Ensure MySQL/MariaDB database service is started and enabled
+  ansible.builtin.service:
+    name: "{{ mysql_service_name }}"
+    state: started
+    enabled: true
+  notify: restart mysql
+
+- name: Create 'ivovle' database using ansible.mysql module
+  ansible.mysql.mysql_db:
+    name: "{{ mysql_database_name }}"
+    state: present
+    login_user: root
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  register: mysql_db_create
+  ignore_errors: true
+
+- name: Fallback create 'ivovle' database via direct SQL command
+  ansible.builtin.command: >
+    mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`{{ mysql_database_name }}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  when: mysql_db_create is failed
+  changed_when: false
+
+- name: Create 'ivolveuser' user with all privileges on 'ivovle' database
+  ansible.mysql.mysql_user:
+    name: "{{ mysql_user_name }}"
+    password: "{{ vault_ivolveuser_password }}"
+    priv: "{{ mysql_user_privileges }}"
+    host: "{{ mysql_user_host }}"
+    state: present
+    login_user: root
+    login_unix_socket: /var/lib/mysql/mysql.sock
+  register: mysql_user_create
+  ignore_errors: true
+
+- name: Fallback create user and grant privileges via SQL command
+  ansible.builtin.command: >
+    mysql -u root -e "
+    CREATE USER IF NOT EXISTS '{{ mysql_user_name }}'@'{{ mysql_user_host }}' IDENTIFIED BY '{{ vault_ivolveuser_password }}';
+    GRANT ALL PRIVILEGES ON \`{{ mysql_database_name }}\`.* TO '{{ mysql_user_name }}'@'{{ mysql_user_host }}';
+    FLUSH PRIVILEGES;"
+  when: mysql_user_create is failed
+  changed_when: false
+
+- name: Validate database connectivity using created 'ivolveuser'
+  ansible.builtin.command: >
+    mysql -u {{ mysql_user_name }} -p'{{ vault_ivolveuser_password }}' -h 127.0.0.1 -e "SHOW DATABASES;"
+  register: validate_db_output
+  changed_when: false
+
+- name: Display MySQL Validation Output
+  ansible.builtin.debug:
+    msg:
+      - "=== Database Validation Successful ==="
+      - "Connected User: {{ mysql_user_name }}"
+      - "Target DB     : {{ mysql_database_name }}"
+      - "Databases Output:"
+      - "{{ validate_db_output.stdout_lines }}"

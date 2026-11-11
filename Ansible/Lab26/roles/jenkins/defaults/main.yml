@@ -1,0 +1,7 @@
+---
+jenkins_java_package: "java-17-openjdk-devel"
+jenkins_repo_url: "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
+jenkins_repo_key: "https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key"
+jenkins_service_state: started
+jenkins_service_enabled: true
+jenkins_port: 8080

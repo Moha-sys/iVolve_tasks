@@ -1,0 +1,14 @@
+---
+# ==============================================================================
+# Lab 27: Securing Sensitive Data with Ansible Vault
+# Automates MySQL deployment and validates user 'ivolveuser' on DB 'ivovle'
+# ==============================================================================
+- name: Deploy and Secure MySQL Database using Ansible Vault
+  hosts: managed_nodes
+  become: true
+  roles:
+    - role: mysql
+      tags:
+        - mysql
+        - database
+        - vault

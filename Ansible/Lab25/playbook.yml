@@ -1,0 +1,137 @@
+---
+# ==============================================================================
+# Lab 25: Automated DevOps Workstation Configuration
+# Automates installation and verification of Docker, Kubectl, and Jenkins
+# ==============================================================================
+- name: Configure Managed Node with Docker, Kubectl, and Jenkins
+  hosts: managed_nodes
+  become: true
+  vars:
+    # Docker Variables
+    docker_packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    docker_user: "{{ ansible_user | default('moha') }}"
+
+    # Kubectl Variables
+    kubectl_version: "v1.31.2"
+    arch_map:
+      x86_64: "amd64"
+      aarch64: "arm64"
+      armv7l: "arm"
+    target_arch: "{{ arch_map[ansible_architecture] | default('amd64') }}"
+    kubectl_download_url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/{{ target_arch }}/kubectl"
+    kubectl_bin_path: "/usr/local/bin/kubectl"
+
+    # Jenkins & Java Variables
+    java_package: "java-17-openjdk-devel"
+    jenkins_repo_url: "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
+    jenkins_repo_key: "https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key"
+
+  tasks:
+    # --------------------------------------------------------------------------
+    # Task Group 1: Install & Configure Docker
+    # --------------------------------------------------------------------------
+    - name: Ensure required dependencies for repository management are installed
+      ansible.builtin.package:
+        name:
+          - curl
+          - gnupg
+          - ca-certificates
+        state: present
+
+    - name: Add Docker official repository (RHEL / CentOS / Rocky)
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/rhel/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+        mode: '0644'
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Docker CE packages
+      ansible.builtin.package:
+        name: "{{ docker_packages }}"
+        state: present
+
+    - name: Ensure Docker daemon service is enabled and running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add remote management user to docker group
+      ansible.builtin.user:
+        name: "{{ docker_user }}"
+        groups: docker
+        append: true
+
+    # --------------------------------------------------------------------------
+    # Task Group 2: Install Kubectl CLI
+    # --------------------------------------------------------------------------
+    - name: Download official Kubectl binary for {{ target_arch }}
+      ansible.builtin.get_url:
+        url: "{{ kubectl_download_url }}"
+        dest: "{{ kubectl_bin_path }}"
+        mode: '0755'
+        owner: root
+        group: root
+
+    # --------------------------------------------------------------------------
+    # Task Group 3: Install & Configure Jenkins
+    # --------------------------------------------------------------------------
+    - name: Install Java 17 runtime for Jenkins
+      ansible.builtin.package:
+        name: "{{ java_package }}"
+        state: present
+
+    - name: Import Jenkins official repository GPG key
+      ansible.builtin.rpm_key:
+        key: "{{ jenkins_repo_key }}"
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Add Jenkins repository definition
+      ansible.builtin.get_url:
+        url: "{{ jenkins_repo_url }}"
+        dest: /etc/yum.repos.d/jenkins.repo
+        mode: '0644'
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Jenkins package
+      ansible.builtin.package:
+        name: jenkins
+        state: present
+
+    - name: Ensure Jenkins service is enabled and started
+      ansible.builtin.service:
+        name: jenkins
+        state: started
+        enabled: true
+
+    # --------------------------------------------------------------------------
+    # Task Group 4: Verification of Configuration
+    # --------------------------------------------------------------------------
+    - name: Verify Docker version
+      ansible.builtin.command: docker --version
+      register: docker_version_output
+      changed_when: false
+
+    - name: Verify Kubectl version
+      ansible.builtin.command: "{{ kubectl_bin_path }} version --client --output=yaml"
+      register: kubectl_version_output
+      changed_when: false
+
+    - name: Verify Jenkins service state
+      ansible.builtin.command: systemctl is-active jenkins
+      register: jenkins_status_output
+      changed_when: false
+
+    - name: Display Configuration Verification Summary
+      ansible.builtin.debug:
+        msg:
+          - "=== Verification Summary on {{ inventory_hostname }} ==="
+          - "Docker Status : {{ docker_version_output.stdout }}"
+          - "Kubectl Status: {{ (kubectl_version_output.stdout | from_yaml).clientVersion.gitVersion }}"
+          - "Jenkins Status: Service is {{ jenkins_status_output.stdout | upper }}"

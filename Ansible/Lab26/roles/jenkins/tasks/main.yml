@@ -1,0 +1,39 @@
+---
+- name: Install Java 17 LTS prerequisite
+  ansible.builtin.package:
+    name: "{{ jenkins_java_package }}"
+    state: present
+
+- name: Import Jenkins official repository GPG key
+  ansible.builtin.rpm_key:
+    key: "{{ jenkins_repo_key }}"
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Add Jenkins RPM repository
+  ansible.builtin.get_url:
+    url: "{{ jenkins_repo_url }}"
+    dest: /etc/yum.repos.d/jenkins.repo
+    mode: '0644'
+  when: ansible_os_family == "RedHat"
+
+- name: Install Jenkins package
+  ansible.builtin.package:
+    name: jenkins
+    state: present
+
+- name: Ensure Jenkins service is running and enabled
+  ansible.builtin.service:
+    name: jenkins
+    state: "{{ jenkins_service_state }}"
+    enabled: "{{ jenkins_service_enabled }}"
+  notify: restart jenkins
+
+- name: Verify Jenkins service is active
+  ansible.builtin.command: systemctl is-active jenkins
+  register: jenkins_active_check
+  changed_when: false
+
+- name: Display Jenkins status
+  ansible.builtin.debug:
+    msg: "Jenkins service is {{ jenkins_active_check.stdout | upper }} (Port: {{ jenkins_port }})"

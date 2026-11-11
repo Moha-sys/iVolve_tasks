@@ -1,0 +1,10 @@
+---
+mysql_packages:
+  - mariadb-server
+  - mariadb
+  - python3-PyMySQL
+mysql_service_name: mariadb
+mysql_database_name: "ivovle"
+mysql_user_name: "ivolveuser"
+mysql_user_host: "%"
+mysql_user_privileges: "ivovle.*:ALL,GRANT"

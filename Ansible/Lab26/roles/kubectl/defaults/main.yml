@@ -1,0 +1,9 @@
+---
+kubectl_version: "v1.31.2"
+arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+  armv7l: "arm"
+kubectl_arch: "{{ arch_map[ansible_architecture] | default('amd64') }}"
+kubectl_url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/{{ kubectl_arch }}/kubectl"
+kubectl_dest: "/usr/local/bin/kubectl"

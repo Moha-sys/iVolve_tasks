@@ -1,0 +1,17 @@
+---
+- name: Download official Kubectl binary
+  ansible.builtin.get_url:
+    url: "{{ kubectl_url }}"
+    dest: "{{ kubectl_dest }}"
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Verify Kubectl binary execution
+  ansible.builtin.command: "{{ kubectl_dest }} version --client"
+  register: kubectl_client_check
+  changed_when: false
+
+- name: Display Kubectl client version
+  ansible.builtin.debug:
+    msg: "Kubectl installed successfully: {{ kubectl_client_check.stdout }}"

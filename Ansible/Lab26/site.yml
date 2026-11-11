@@ -1,0 +1,21 @@
+---
+# ==============================================================================
+# Lab 26: Master Playbook Executing Modular Roles
+# Roles: Docker, Kubectl, Jenkins
+# ==============================================================================
+- name: Deploy DevOps Infrastructure via Structured Roles
+  hosts: managed_nodes
+  become: true
+  roles:
+    - role: docker
+      tags:
+        - docker
+        - container_runtime
+    - role: kubectl
+      tags:
+        - kubectl
+        - kubernetes_tools
+    - role: jenkins
+      tags:
+        - jenkins
+        - ci_server

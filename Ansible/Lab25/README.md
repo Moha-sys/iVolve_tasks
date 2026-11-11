@@ -85,6 +85,8 @@ Verify the YAML syntax and module parameters before execution:
 ansible-playbook playbook.yml --syntax-check
 ```
 
+![Playbook Syntax Check](screenshots/01-playbook-syntax-check.jpg)
+
 ### Step 3: Execute the Automated Playbook
 
 Run the playbook against target hosts with sudo privilege escalation:
@@ -93,6 +95,8 @@ Run the playbook against target hosts with sudo privilege escalation:
 ansible-playbook playbook.yml --ask-become-pass -l managed_nodes
 ```
 
+![Playbook Execution Summary](screenshots/02-playbook-execution-summary.jpg)
+
 ### Step 4: Verify Components on Managed Node
 
 Run [`verify.sh`](verify.sh) to execute end-to-end status validations:
@@ -100,6 +104,8 @@ Run [`verify.sh`](verify.sh) to execute end-to-end status validations:
 ```bash
 ./verify.sh managed_nodes
 ```
+
+![Jenkins URI Verification](screenshots/03-jenkins-uri-verification.jpg)
 
 Individual ad-hoc verification commands:
 ```bash
